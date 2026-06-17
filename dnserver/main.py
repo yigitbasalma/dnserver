@@ -76,6 +76,9 @@ class Record:
         )
 
     def match(self, q):
+        if self._rname.startswith("*"):
+            _domain = ".".join(self._rname.split(".")[1:])
+            return q.qname.endswith(_domain) and (q.qtype == QTYPE.ANY or q.qtype == self._rtype)
         return q.qname == self._rname and (q.qtype == QTYPE.ANY or q.qtype == self._rtype)
 
     def sub_match(self, q):
