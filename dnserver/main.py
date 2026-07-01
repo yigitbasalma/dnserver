@@ -91,6 +91,8 @@ def resolve(request, handler, records):
     reply = request.reply()
     for record in records:
         if record.match(request.q):
+            if record.rr.rname.label and record.rr.rname.label[0] == b'*':
+                record.rr.rname = DNSLabel(request.q.qname)
             reply.add_answer(record.rr)
 
     if reply.rr:
